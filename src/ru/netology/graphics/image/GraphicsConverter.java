@@ -39,16 +39,15 @@ public class GraphicsConverter implements TextGraphicsConverter{
         WritableRaster bwRaster = bwImg.getRaster();
         ColorSchema schema = new ColorSchema();
 
-        String [][] textImage = new String[newWidth][newHeight];
+        char [][] textImage = new char[newWidth][newHeight];
         for (int w =0;w<newWidth;w++) {
             for (int h =0;h < newHeight;h++) {
                 int color = bwRaster.getPixel(w, h, new int[3])[0];
                 char c = schema.convert(color);
-                textImage[w][h]= String.valueOf(c);
+                textImage[w][h] = (c);
             }
         }
-
-        return textImage;
+        return null;
     }
 
     @Override
