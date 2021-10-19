@@ -20,7 +20,7 @@ public class GraphicsConverter implements TextGraphicsConverter{
         int height = image.getHeight();
         int newWidth=width;
         int newHeight=height;
-        if (maxHight !=0 || maxWidth !=0){
+        if (maxHight !=0 && maxHight !=height || maxWidth !=0 && maxWidth !=width){
             newWidth = height/(width/maxWidth);
             newHeight = width/(height/maxHight);
         }
@@ -39,16 +39,16 @@ public class GraphicsConverter implements TextGraphicsConverter{
         WritableRaster bwRaster = bwImg.getRaster();
         ColorSchema schema = new ColorSchema();
 
-        char [][] textImage = new char[2*newWidth][newHeight];
+        String [][] textImage = new String[newWidth][newHeight];
         for (int w =0;w<newWidth;w++) {
-            for (int h =0;w<newHeight;h++) {
+            for (int h =0;h < newHeight;h++) {
                 int color = bwRaster.getPixel(w, h, new int[3])[0];
                 char c = schema.convert(color);
-                textImage[w][h]=c;
-                textImage[w+1][h]=c;
+                textImage[w][h]= String.valueOf(c);
             }
         }
-        return;
+
+        return textImage;
     }
 
     @Override
