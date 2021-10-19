@@ -5,10 +5,10 @@ public class ColorSchema implements TextColorSchema{
     public char convert(int color) {
         char c = 12;
         if (color > 240){
-            c =(char) 178;
+            c ='.';
         }
         if (color > 180 && color <= 240){
-            c = (char) 36;
+            c ='▇';
         }
         return c ;
     }
