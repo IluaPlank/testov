@@ -7,6 +7,7 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 
 public class GraphicsConverter implements TextGraphicsConverter{
     private int maxWidth = 0;
@@ -39,15 +40,15 @@ public class GraphicsConverter implements TextGraphicsConverter{
         WritableRaster bwRaster = bwImg.getRaster();
         ColorSchema schema = new ColorSchema();
 
-        char [][] textImage = new char[newWidth][newHeight];
+        char [][] charsImage = new char[newWidth][newHeight];
         for (int w =0;w<newWidth;w++) {
             for (int h =0;h < newHeight;h++) {
                 int color = bwRaster.getPixel(w, h, new int[3])[0];
                 char c = schema.convert(color);
-                textImage[w][h] = (c);
+                charsImage[w][h] = (c);
             }
         }
-        return null;
+        return Arrays.deepToString(charsImage);
     }
 
     @Override
