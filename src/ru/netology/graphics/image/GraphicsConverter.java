@@ -30,8 +30,8 @@ public class GraphicsConverter implements TextGraphicsConverter{
                 throw new BadImageSizeException((double) newWidth / newHeight, ratio);
         }
 
-        Image scaledImage = image.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-        BufferedImage bwImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
+        Image scaledImage = image.getScaledInstance(newHeight,newWidth, BufferedImage.SCALE_SMOOTH);
+        BufferedImage bwImg = new BufferedImage (newHeight,newWidth, BufferedImage.TYPE_BYTE_GRAY);
         Graphics2D graphics = bwImg.createGraphics();
         graphics.drawImage(scaledImage, 0, 0, null);
         ImageIO.write(bwImg, "png", new File("out.png"));
@@ -39,15 +39,16 @@ public class GraphicsConverter implements TextGraphicsConverter{
 
         WritableRaster bwRaster = bwImg.getRaster();
         ColorSchema schema = new ColorSchema();
-        char [][] charsImage = new char[newHeight][newWidth];
-        for  (int w =0;w<newWidth;w++){
-            for (int h =0;h < newHeight;h++) {
-                int color = bwRaster.getPixel(w, h, new int[3])[0];
+
+        char [][] charsImage = new char[newWidth][newHeight];
+        for (int h =0;h < newHeight;h++) {
+            for  (int w =0;w<newWidth;w++){
+                int color = bwRaster.getPixel(h, w, new int[3])[0];
                 char c = schema.convert(color);
-                charsImage[h][w] = (c);
+                charsImage[w][h] = (c);
             }
         }
-        return Arrays.deepToString(charsImage).replaceAll("],", System.lineSeparator());
+        return Arrays.deepToString(charsImage).replaceAll("]", System.lineSeparator());
     }
 
     @Override
