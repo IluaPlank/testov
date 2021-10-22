@@ -3,7 +3,7 @@ package ru.netology.graphics.image;
 public class ColorSchema implements TextColorSchema{
     @Override
     public char convert(int color) {
-        char [] c = {'#', '$', '@', '%', '*', '+', '-', '.', '-'};
+        char [] c = {'#', '$', '@', '%', '*', '+', ':', '.', '-'};
         char result= c[8];
 
         if (color>226){
