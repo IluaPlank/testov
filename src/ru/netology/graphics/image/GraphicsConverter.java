@@ -13,18 +13,17 @@ public class GraphicsConverter implements TextGraphicsConverter{
     private int maxWidth = 0;
     private int maxHight = 0;
     private double ratio = 0;
+    public int newHeight;
+    public int newWidth;
 
     @Override
     public String convert(String url) throws IOException, BadImageSizeException {
         BufferedImage image = ImageIO.read(new URL(url));
         int width = image.getWidth();
         int height = image.getHeight();
-        int newWidth=width;
-        int newHeight=height;
-        if (maxHight !=0 && maxHight !=height || maxWidth !=0 && maxWidth !=width){
-            newWidth = height/(width/maxWidth);
-            newHeight = width/(height/maxHight);
-        }
+        newWidth=width;
+        newHeight=height;
+        size(height,width);
         if (ratio !=0){
             if ((double)newWidth/newHeight > ratio)
                 throw new BadImageSizeException((double) newWidth / newHeight, ratio);
@@ -49,6 +48,22 @@ public class GraphicsConverter implements TextGraphicsConverter{
             }
         }
         return Arrays.deepToString(charsImage).replaceAll("]", System.lineSeparator());
+    }
+
+
+
+    public void size (int height,int width){
+        if (maxHight !=0 && maxHight !=height || maxWidth !=0 && maxWidth !=width){
+            //установлен макс высота или макс ширина и они не равны стандарту картинки
+            if (maxHight <= height){
+                newHeight = maxHight;
+            }
+            else newHeight = height*maxHight/width;
+            if (maxWidth <= width ){
+                newWidth =maxWidth;
+            }
+            else newWidth = width*maxHight/height;
+        }
     }
 
     @Override
