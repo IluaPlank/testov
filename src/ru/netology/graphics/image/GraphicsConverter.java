@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 
-public class GraphicsConverter implements TextGraphicsConverter{
+public class GraphicsConverter implements TextGraphicsConverter {
     private int maxWidth = 0;
     private int maxHight = 0;
     private double ratio = 0;
@@ -21,54 +21,53 @@ public class GraphicsConverter implements TextGraphicsConverter{
         BufferedImage image = ImageIO.read(new URL(url));
         int width = image.getWidth();
         int height = image.getHeight();
-        newWidth=width;
-        newHeight=height;
-        size(height,width);
-        if (ratio !=0){
-            if ((double)newWidth/newHeight > ratio)
+        newWidth = width;
+        newHeight = height;
+
+        size(height, width);
+        //установка размера картинки
+
+        if (ratio != 0) {
+            if ((double) newWidth / newHeight > ratio)
                 throw new BadImageSizeException((double) newWidth / newHeight, ratio);
         }
 
-        Image scaledImage = image.getScaledInstance(newHeight,newWidth, BufferedImage.SCALE_SMOOTH);
-        BufferedImage bwImg = new BufferedImage (newHeight,newWidth, BufferedImage.TYPE_BYTE_GRAY);
+        Image scaledImage = image.getScaledInstance(newHeight, newWidth, BufferedImage.SCALE_SMOOTH);
+        BufferedImage bwImg = new BufferedImage(newHeight, newWidth, BufferedImage.TYPE_BYTE_GRAY);
         Graphics2D graphics = bwImg.createGraphics();
         graphics.drawImage(scaledImage, 0, 0, null);
         ImageIO.write(bwImg, "png", new File("out.png"));
-
-
         WritableRaster bwRaster = bwImg.getRaster();
-        ColorSchema schema = new ColorSchema();
 
-        char [][] charsImage = new char[newWidth][newHeight];
-        for (int h =0;h < newHeight;h++) {
-            for  (int w =0;w<newWidth;w++){
+
+        ColorSchema schema = new ColorSchema();
+        char[][] charsImage = new char[newWidth][newHeight];
+        for (int h = 0; h < newHeight; h++) {
+            for (int w = 0; w < newWidth; w++) {
                 int color = bwRaster.getPixel(h, w, new int[3])[0];
-                char c = schema.convert(color);
-                charsImage[w][h] = (c);
+                char symbol = schema.convert(color);
+                charsImage[w][h] = (symbol);
             }
         }
         return Arrays.deepToString(charsImage).replaceAll("]", System.lineSeparator());
     }
 
 
-
-    public void size (int height,int width){
-        if (maxHight !=0 && maxHight !=height || maxWidth !=0 && maxWidth !=width){
+    public void size(int height, int width) {
+        if (maxHight != 0 && maxHight != height || maxWidth != 0 && maxWidth != width) {
             //установлен макс высота или макс ширина и они не равны стандарту картинки
-            if (maxHight <= height){
+            if (maxHight <= height) {
                 newHeight = maxHight;
-            }
-            else newHeight = height*maxHight/width;
-            if (maxWidth <= width ){
-                newWidth =maxWidth;
-            }
-            else newWidth = width*maxHight/height;
+            } else newHeight = height * maxHight / width;
+            if (maxWidth <= width) {
+                newWidth = maxWidth;
+            } else newWidth = width * maxHight / height;
         }
     }
 
     @Override
     public void setMaxWidth(int width) {
-        maxWidth=width;
+        maxWidth = width;
     }
 
     @Override
@@ -78,7 +77,7 @@ public class GraphicsConverter implements TextGraphicsConverter{
 
     @Override
     public void setMaxRatio(double maxRatio) {
-        ratio=maxRatio;
+        ratio = maxRatio;
     }
 
     @Override
