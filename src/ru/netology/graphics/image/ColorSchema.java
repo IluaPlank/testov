@@ -2,11 +2,11 @@ package ru.netology.graphics.image;
 
 public class ColorSchema implements TextColorSchema {
 
-    private final char[] symbol = {'#', '$', '@', '%', '*', '+', ':', '.', '-'};
+    private static final char[] symbol = {'#', '$', '@', '%', '*', '+', ':', '.', '-'};
     int result;
 
     @Override
     public char convert(int color) {
-        return symbol[result = color / 30];
+        return symbol[result = color / 29];
     }
 }
